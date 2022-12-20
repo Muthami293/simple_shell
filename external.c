@@ -77,21 +77,13 @@ char *generate_path(char *command)
 	if (path)
 	{
 		path_copy = _strdup(path);
-
 		command_len = _strlen(command);
-
 		token = strtok(path_copy, ":");
 
 		while (token != NULL)
 		{
 			dir_len = _strlen(token);
-
 			command_path = malloc(command_len + dir_len + 2);
-
-			if (command_path == NULL)
-			{
-				perror("Error");
-			}
 
 			_strcpy(command_path, token);
 			_strcat(command_path, "/");
@@ -100,11 +92,19 @@ char *generate_path(char *command)
 
 			if (access(command_path, F_OK) == 0)
 			{
+				free(path_copy);
 				return (command_path);
 			}
 			free(command_path);
 			token = strtok(NULL, ":");
 		}
+		free(path_copy);
+
+		if (access(command, F_OK) == 0)
+		{
+			return (command);
+		}
+		return (NULL);
 	}
 	return (NULL);
 }
