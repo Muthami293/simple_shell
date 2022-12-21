@@ -25,7 +25,7 @@ void execute_command(char **argv)
 
 		if (handle_exit(command))
 		{
-			exit(1);
+			exit(EXIT_SUCCESS);
 		}
 		else if (handle_env(command))
 		{
@@ -45,7 +45,7 @@ void execute_command(char **argv)
 			}
 			else
 			{
-				perror("Error creating child process");
+				perror("Error");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -73,20 +73,20 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		write(STDOUT_FILENO, "$ ", 2);
+		write(STDOUT_FILENO, "($) ", 5);
 
 		nread = getline(&input, &n, stdin);
 
 		if (nread == -1)
 		{
-			perror("Error reading line of text");
+			perror("Error");
 			exit(EXIT_FAILURE);
 		}
 		input_copy = malloc(sizeof(char) * nread);
 
 		if (input_copy == NULL)
 		{
-			perror("Error allocating memory");
+			perror("Error");
 			exit(EXIT_FAILURE);
 		}
 
@@ -96,5 +96,5 @@ int main(int argc, char **argv)
 	}
 
 	free(input_copy);
-	return (0);
+	return (EXIT_SUCCESS);
 }
