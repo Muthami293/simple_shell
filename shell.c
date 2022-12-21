@@ -63,22 +63,42 @@ void execute_command(char **argv)
  * Return: O on success, 1 on failure.
  */
 
-int main(int argc, char **argv)
+int main(int argc __attribute__((unused)), char **argv)
 {
 	char *input, *input_copy;
 	size_t n = 0;
 	ssize_t nread = 0;
 
-	if (argc < 0)
+	if (isatty(STDIN_FILENO))
 	{
-		perror("Usage");
-		exit(EXIT_FAILURE);
+		/*Running in interactive mode*/
+		while (1)
+		{
+			write(STDOUT_FILENO, "($) ", 5);
+
+			nread = getline(&input, &n, stdin);
+
+			if (nread == -1)
+			{
+				perror("readline");
+				exit(EXIT_FAILURE);
+			}
+			input_copy = malloc(sizeof(char) * nread);
+
+			if (input_copy == NULL)
+			{
+				perror("Error");
+				exit(EXIT_FAILURE);
+			}
+
+			_strcpy(input_copy, input);
+
+			parse_input(input, input_copy, argv);
+		}
 	}
-
-	while (1)
+	else
 	{
-		write(STDOUT_FILENO, "($) ", 5);
-
+		/*Running in non-interactive mode*/
 		nread = getline(&input, &n, stdin);
 
 		if (nread == -1)
