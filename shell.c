@@ -63,13 +63,13 @@ void execute_command(char **argv)
  * Return: O on success, 1 on failure.
  */
 
-int main(int argc __attribute__((unused)), char **argv)
+int main(int argc, char **argv)
 {
 	char *input, *input_copy;
 	size_t n = 0;
 	ssize_t nread = 0;
 
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO) || argc > 1)
 	{
 		/*Running in interactive mode*/
 		while (1)
