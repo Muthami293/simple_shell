@@ -37,7 +37,11 @@ void execute_command(char **argv)
 
 			if (pid == 0)
 			{
-				execve(path_command, argv, NULL);
+				if (execve(path_command, argv, NULL) == -1)
+				{
+					perror("Error");
+				}
+				exit(EXIT_FAILURE);
 			}
 			else if (pid > 0)
 			{
@@ -79,7 +83,7 @@ int main(int argc, char **argv)
 
 		if (nread == -1)
 		{
-			perror("Error");
+			perror("readline");
 			exit(EXIT_FAILURE);
 		}
 		input_copy = malloc(sizeof(char) * nread);
