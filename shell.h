@@ -15,6 +15,7 @@ int _strlen(const char *s);
 int parse_input(char *input, char *input_copy, char **argv);
 int commandIsInternal(char **argv);
 void execute_command(char **argv);
+int execute_non_interactive(char *input, char **argv);
 int handle_exit(char *command);
 int handle_env(char *command);
 void print_env(void);
